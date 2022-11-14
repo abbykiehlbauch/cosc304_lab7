@@ -15,12 +15,15 @@
 <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
 </form>
 
+<h2>All products</h2>
+
 <% // Get product name to search for
 String name = request.getParameter("productName");
 		
 //Note: Forces loading of SQL Server driver
 try
-{	// Load driver class
+{	
+	// Load driver class
 	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 }
 catch (java.lang.ClassNotFoundException e)
@@ -32,26 +35,24 @@ catch (java.lang.ClassNotFoundException e)
 // Use it to build a query and print out the resultset.  Make sure to use PreparedStatement!
 
 // Make the connection
-String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
+String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True;";
 String uid = "sa";
 String pw = "304#sa#pw"; 
-try(Connection con = DriverManager.getConnection(url, uid, pw);)
-{
-	String sql = "SELECT productName FROM orders WHERE productName LIKE '%" + name + "%'";
-	PreparedStatement pstmt = con.prepareStatement(sql);
-	//pstmt.setString(1, name);
-	ResultSet rst = pstmt.executeQuery();
-}
+Connection con = DriverManager.getConnection(url, uid, pw);
+String sql = "SELECT productName, productPrice FROM product WHERE productName LIKE '%" + name + "%'";
+PreparedStatement pstmt = con.prepareStatement(sql);
+ResultSet rst = pstmt.executeQuery();
 // Print out the ResultSet
+while(rst.next())
+{
+	NumberFormat currFormat = NumberFormat.getCurrencyInstance();
+	out.println("<a href='addcart.jsp?id=productId&name=productName&price=productPrice'>Add to cart</a>" + " " + rst.getString("productName") + " "+ currFormat.format(rst.getDouble("productPrice")) + "<br>");
+}
 
 // For each product create a link of the form
-// addcart.jsp?id=productId&name=productName&price=productPrice
+//addcart.jsp?id=productId&name=productName&price=productPrice
 // Close connection
-
-// Useful code for formatting currency values:
-// NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-// out.println(currFormat.format(5.0);	// Prints $5.00
+con.close();
 %>
-
 </body>
 </html>
