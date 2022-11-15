@@ -17,6 +17,7 @@
 
 <h2>All products</h2>
 
+
 <% // Get product name to search for
 String name = request.getParameter("productName");
 		
@@ -39,14 +40,25 @@ String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustS
 String uid = "sa";
 String pw = "304#sa#pw"; 
 Connection con = DriverManager.getConnection(url, uid, pw);
-String sql = "SELECT productName, productPrice FROM product WHERE productName LIKE '%" + name + "%'";
+String sql;
+if(name != null)
+	sql = "SELECT productId, productName, productPrice FROM product WHERE productName LIKE '%" + name + "%'";
+else
+	sql = "SELECT productId, productName, productPrice FROM product";
+
 PreparedStatement pstmt = con.prepareStatement(sql);
 ResultSet rst = pstmt.executeQuery();
 // Print out the ResultSet
 while(rst.next())
 {
 	NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-	out.println("<a href='addcart.jsp?id=productId&name=productName&price=productPrice'>Add to cart</a>" + " " + rst.getString("productName") + " "+ currFormat.format(rst.getDouble("productPrice")) + "<br>");
+	String prodid = rst.getString("productId");
+	String prodname = rst.getString("productName");
+	double prodprice = rst.getDouble("productPrice");
+	out.print("<a href='addcart.jsp?id=" + prodid + "&name=" + prodname + "&price=" + prodprice + "'>Add to cart</a>");
+	out.print(" " + rst.getString("productName"));
+	out.print(" "+ currFormat.format(rst.getDouble("productPrice")) + "<br>");
+	
 }
 
 // For each product create a link of the form
