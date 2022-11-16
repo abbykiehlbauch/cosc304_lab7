@@ -17,7 +17,6 @@
 
 <h2>All products</h2>
 
-
 <% // Get product name to search for
 String name = request.getParameter("productName");
 		
@@ -49,20 +48,19 @@ else
 PreparedStatement pstmt = con.prepareStatement(sql);
 ResultSet rst = pstmt.executeQuery();
 // Print out the ResultSet
+out.print("<table>");
+out.print("<tr><th></th><th>Product Name</th><th>Price</th></tr>" + "<br>");
 while(rst.next())
 {
 	NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 	String prodid = rst.getString("productId");
 	String prodname = rst.getString("productName");
 	double prodprice = rst.getDouble("productPrice");
-	out.print("<a href='addcart.jsp?id=" + prodid + "&name=" + prodname + "&price=" + prodprice + "'>Add to cart</a>");
-	out.print(" " + rst.getString("productName"));
-	out.print(" "+ currFormat.format(rst.getDouble("productPrice")) + "<br>");
-	
+	out.print("<tr><td>"+"<a href='addcart.jsp?id=" + prodid + "&name=" + prodname + "&price=" + prodprice + "'>Add to cart</a>" + "</td>");
+	out.print("<td>"+" " + rst.getString("productName")+ "</td>");
+	out.print("<td>"+" "+ currFormat.format(rst.getDouble("productPrice")) + "</td></tr>");
 }
-
-// For each product create a link of the form
-//addcart.jsp?id=productId&name=productName&price=productPrice
+out.print("</table>");
 // Close connection
 con.close();
 %>
