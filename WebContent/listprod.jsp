@@ -7,7 +7,9 @@
 <title>YOUR NAME Grocery</title>
 </head>
 <body>
-
+	<div class = "header">
+		<table style="margin-left:auto;margin-right:auto;""><th style = "padding:10px"><a href="listprod.jsp">Begin Shopping</a></th><th style = "padding:10px"><a href="listorder.jsp">List All Orders</a></th><th style = "padding:10px"><a href="showcart.jsp">See cart</a></th></table>
+	</div>
 <h1>Search for the products you want to buy:</h1>
 
 <form method="get" action="listprod.jsp">
