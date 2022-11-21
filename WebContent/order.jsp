@@ -10,14 +10,40 @@
 <html>
 <head>
 <title>YOUR NAME Grocery Order Processing</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 </head>
 <body>
-	<div class = "header">
-		<table style="margin-left:auto;margin-right:auto;""><th style = "padding:10px"><a href="listprod.jsp">Begin Shopping</a></th><th style = "padding:10px"><a href="listorder.jsp">List All Orders</a></th><th style = "padding:10px"><a href="showcart.jsp">See cart</a></th></table>
-	</div>
+	<nav class="navbar navbar-expand-lg bg-light">
+		<div class="container-fluid">
+		  <a class="navbar-brand" href="shop.html">WELCOME</a>
+		  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div class="collapse navbar-collapse" id="navbarText">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+			  <li class="nav-item">
+				<a class="nav-link" aria-current="page" href="shop.html">Home</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="listprod.jsp">Products</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="listorder.jsp">List Order</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="showcart.jsp">My Cart</a>
+			  </li>
+			</ul>
+			<span class="navbar-text">
+			  Your first choice for digital groceries!
+			</span>
+		  </div>
+		</div>
+</nav>
 <% 
 
-<h2 align="center"><a href="login.jsp">login to complete your transaction</a></h2>
+//<h2 align="center"><a href="login.jsp">login to complete your transaction</a></h2>
 
 
 // Get customer id
@@ -60,7 +86,7 @@ else
 		String name = "";
 		if(!validId.next())
 		{
-			out.println("<h1>Invalid customer id</h1>");
+			out.println("<h1>Invalid customer id. Use the back button on your browser to try again</h1>");
 		}
 		else
 		{
@@ -123,11 +149,12 @@ else
 			out.println("<h2>Your order reference number is:"+orderId+"</h2>");
 			out.println("<h2>Shipping to customer: "+custId+" Name: "+name+"</h2>");
 
+			session.setAttribute("productList", null);
+			con.close();
 		}
 
 		// Clear cart if order placed successfully
-		session.setAttribute("productList", null);
-		con.close();
+		
 
 		// Here is the code to traverse through a HashMap
 		// Each entry in the HashMap is an ArrayList with item 0-id, 1-name, 2-quantity, 3-price
