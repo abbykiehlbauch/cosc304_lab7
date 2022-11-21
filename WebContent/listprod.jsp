@@ -17,7 +17,6 @@
 <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
 </form>
 
-<h2>All products</h2>
 
 <% // Get product name to search for
 String name = request.getParameter("productName");
@@ -43,9 +42,15 @@ String pw = "304#sa#pw";
 Connection con = DriverManager.getConnection(url, uid, pw);
 String sql;
 if(name != null)
+{
 	sql = "SELECT productId, productName, productPrice FROM product WHERE productName LIKE '%" + name + "%'";
+	out.println("<h2>Products containing '" + name + "'</h2>");
+}
 else
+{
 	sql = "SELECT productId, productName, productPrice FROM product";
+	out.println("<h2>All products</h2>");
+}
 
 PreparedStatement pstmt = con.prepareStatement(sql);
 ResultSet rst = pstmt.executeQuery();
