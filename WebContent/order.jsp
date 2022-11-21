@@ -17,6 +17,8 @@
 	</div>
 <% 
 
+<h2 align="center"><a href="login.jsp">login to complete your transaction</a></h2>
+
 
 // Get customer id
 String custId = request.getParameter("customerId");
