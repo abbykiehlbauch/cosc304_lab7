@@ -38,7 +38,6 @@ String sql2;
 try 
 {
 	sql1 = "SELECT orderId, customer.customerId, firstName, lastName, totalAmount" + " FROM ordersummary JOIN customer ON ordersummary.customerId=customer.customerId";
-	sql2 = "SELECT productId, quantity, price FROM orderproduct";
 	PreparedStatement pstmt1 = con.prepareStatement(sql1);
 	ResultSet rst1 = pstmt1.executeQuery();
 	out.println("<table border='2px' border-style='ridge'><tr><td class='tableheader'><b>Order ID</b></td><td class='tableheader'><b>Customer ID</b></td><td class='tableheader'><b>Customer Name</b></td><td class='tableheader'><b>Total Amount</b></td></tr>");
@@ -51,9 +50,11 @@ try
 		String custName = custFirst + " " + custLast;
 		double total = rst1.getDouble("totalAmount");
 
+
 		out.println("<tr><td>" + ordID + "</td><td>" + custID + "</td><td>" + custName + "</td><td>" + currFormat.format(total) + "</td></tr>");
 		out.println("<tr><td colspan=5 align='right'><table border='2px' border-style='ridge'>");
 		out.println("<tr><td class='tableheader'><b>Product Id</b></td><td class='tableheader'><b>Quantity</b></td><td class='tableheader'><b>Price</b></td></tr>");
+		sql2 = "SELECT productId, quantity, price FROM orderproduct WHERE orderId = " + ordID;
 		PreparedStatement pstmt2 = con.prepareStatement(sql2);
 		ResultSet rst2 = pstmt2.executeQuery();
 		while(rst2.next())
